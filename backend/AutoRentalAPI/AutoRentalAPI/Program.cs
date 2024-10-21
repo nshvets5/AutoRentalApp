@@ -1,6 +1,9 @@
 
+using AutoRentalAPI.Interfaces;
 using AutoRentalAPI.Models;
+using AutoRentalAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace AutoRentalAPI
 {
@@ -18,6 +21,19 @@ namespace AutoRentalAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IClientRepository, ClientRepository>();
+            builder.Services.AddScoped<ICarTypeRepository, CarTypeRepository>();
+            builder.Services.AddScoped<ICarRepository, CarRepository>();
+            builder.Services.AddScoped<IRentalContractRepository, RentalContractRepository>();
+            builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+            builder.Services.AddScoped<IAdditionalServiceRepository, AdditionalServiceRepository>();
+            builder.Services.AddScoped<IServicesContractRepository, ServicesContractRepository>();
+
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
 
             var app = builder.Build();
 
